@@ -23,15 +23,19 @@ using namespace std::literals;
 namespace WasmEdge {
 namespace Driver {
 
-// Helper template to parse numeric arguments and catch conversion exceptions
+//helper template to parse numeric arguments and catch conversion exceptions
 template <typename Converter, typename ValVec, typename TypeVec, typename TC>
+//Converter: converts a string to the correct numeric type
+//ValVec: vector type holding function arguments
+//TypeVec: vector type holding argument type codes
+//TC: type code type
 bool parseNumericArg(const std::string &Value, size_t ParamIndex,
                      std::string_view TypeName, Converter Conv,
                      ValVec &FuncArgs, TypeVec &FuncArgTypes, TC TCode) {
   try {
-    auto Out = Conv(Value);
-    FuncArgs.emplace_back(Out);
-    FuncArgTypes.emplace_back(TCode);
+    auto Out = Conv(Value); //calls the lambda function
+    FuncArgs.emplace_back(Out); //adds the parsed value
+    FuncArgTypes.emplace_back(TCode); //adds the type information
     return true;
   } catch (const std::invalid_argument &) {
     spdlog::error("Invalid argument '{}' for parameter {}: expected {}"sv,
