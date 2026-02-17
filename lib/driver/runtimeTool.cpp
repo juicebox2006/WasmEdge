@@ -36,15 +36,15 @@ bool parseNumericArg(const std::string &Value, size_t ParamIndex,
     auto Out = Conv(Value); //calls the lambda function
     FuncArgs.emplace_back(Out); //adds the parsed value
     FuncArgTypes.emplace_back(TCode); //adds the type information
-    return true;
-  } catch (const std::invalid_argument &) {
+    return true; //return true to indicate that parsing has been completed
+  } catch (const std::invalid_argument &) { //this helps output an error statement that looks like: "Invalid argument 'not_a_number' for parameter 1: expected i32"
     spdlog::error("Invalid argument '{}' for parameter {}: expected {}"sv,
                   Value, ParamIndex + 1, TypeName);
-    return false;
-  } catch (const std::out_of_range &) {
+    return false; //return false to indicate no parsing completed
+  } catch (const std::out_of_range &) { //this helps output an error statement that looks like: "Argument '9999999999999999999' for parameter 1: i32 out of range"
     spdlog::error("Argument '{}' for parameter {}: {} out of range"sv, Value,
                   ParamIndex + 1, TypeName);
-    return false;
+    return false; //return false to indicate no parsing completed
   }
 }
 
