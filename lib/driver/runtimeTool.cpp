@@ -62,7 +62,7 @@ ToolOnModule(WasmEdge::VM::VM &VM, const std::string &FuncName,
     const auto TCode = FuncType.getParamTypes()[I].getCode();
     const auto &ArgValue = Opt.Args.value()[I + 1];
     switch (TCode) {
-    case TypeCode::I32: {
+    case TypeCode::I32: { //if parses, return converted information, else exit_failure, then break
       if (!parseNumericArg(
               ArgValue, I, "i32"sv,
               [](const std::string &S) {
